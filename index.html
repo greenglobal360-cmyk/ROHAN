@@ -47,19 +47,12 @@ h1 {
 .heart {
     position: absolute;
     color: red;
-    font-size: 20px;
     animation: floatUp 5s linear infinite;
 }
 
 @keyframes floatUp {
-    0% {
-        transform: translateY(100vh) scale(1);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(-10vh) scale(1.5);
-        opacity: 0;
-    }
+    0% { transform: translateY(100vh); opacity: 1; }
+    100% { transform: translateY(-10vh); opacity: 0; }
 }
 
 /* Dance animation */
@@ -79,7 +72,7 @@ h1 {
 
 <body>
 
-<h1>Rohan ❤️ Purva<br>Will you be my Valentine? 💖</h1>
+<h1 id="question">Rohan ❤️ Purva<br>Will you marry me again? 💖</h1>
 
 <button id="yes" class="btn">Yes 💖</button>
 <button id="no" class="btn">No 😢</button>
@@ -87,8 +80,22 @@ h1 {
 <script>
 const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
+const question = document.getElementById("question");
 
-// Move button (for desktop + mobile)
+let messages = [
+    "Are you sure? 😢",
+    "Really sure? 🥺",
+    "Think again 💔",
+    "Please say yes ❤️",
+    "Don't break my heart 💕",
+    "Last chance 😭",
+    "I'm sad now 😞",
+    "You can't say no 😜"
+];
+
+let index = 0;
+
+// Move button
 function moveButton() {
     const x = Math.random() * (window.innerWidth - 100);
     const y = Math.random() * (window.innerHeight - 50);
@@ -96,22 +103,27 @@ function moveButton() {
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
 
+    // Change message
+    question.innerHTML = "Rohan ❤️ Purva<br>" + messages[index % messages.length];
+    index++;
+
+    // Shrink button
     let size = parseFloat(window.getComputedStyle(noBtn).fontSize);
     if (size > 10) {
         noBtn.style.fontSize = (size - 2) + "px";
     }
 }
 
-// Desktop hover
+// Desktop
 noBtn.addEventListener("mouseover", moveButton);
 
-// Mobile touch
+// Mobile
 noBtn.addEventListener("touchstart", function(e) {
     e.preventDefault();
     moveButton();
 });
 
-// Floating hearts generator
+// Floating hearts
 function createHeart() {
     const heart = document.createElement("div");
     heart.classList.add("heart");
@@ -122,15 +134,12 @@ function createHeart() {
 
     document.body.appendChild(heart);
 
-    setTimeout(() => {
-        heart.remove();
-    }, 5000);
+    setTimeout(() => heart.remove(), 5000);
 }
 
-// Create hearts continuously
 setInterval(createHeart, 300);
 
-// YES click effect
+// YES click
 yesBtn.addEventListener("click", () => {
     document.body.innerHTML = `
         <h1 class="dance" style="color:#ff3366; margin-top:150px;">
@@ -139,7 +148,6 @@ yesBtn.addEventListener("click", () => {
         </h1>
     `;
 
-    // Extra hearts burst
     for (let i = 0; i < 50; i++) {
         setTimeout(createHeart, i * 100);
     }
